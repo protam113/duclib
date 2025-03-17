@@ -9,8 +9,24 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
+// Xác định môi trường từ biến môi trường hoặc mặc định là 'development'
+const env = process.env.NODE_ENV || "development";
+
+const config = [
+  // Cấu hình từ Next.js core-web-vitals và typescript
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  // Rule tùy chỉnh cho no-console
+  {
+    rules: {
+      "no-console": [
+        "error",
+        {
+          allow: env === "development" ? ["log", "warn", "error"] : [],
+        },
+      ],
+      "@typescript-eslint/no-explicit-any": "off", // Cho phép sử dụng any
+    },
+  },
 ];
 
-export default eslintConfig;
+export default config;
